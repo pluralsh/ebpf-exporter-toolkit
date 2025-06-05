@@ -13,8 +13,9 @@ jobs:
   build-image:
     name: Build Image
     permissions:
-      contents: read
-      packages: write
+      contents: 'read'
+      id-token: 'write'
+      packages: 'write'
     strategy:
       fail-fast: false
       matrix:
