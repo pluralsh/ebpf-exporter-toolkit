@@ -25,7 +25,8 @@ clang-format-check:
 
 .PHONY: clang-format
 clang-format:
-	docker run --rm -v $(PWD)/src:/src silkeh/clang clang-format --style=file -i $(CLANG_FORMAT_FILES)
+	@docker run --rm -v $(PWD)/src:/src silkeh/clang clang-format --style=file -i $(CLANG_FORMAT_FILES)
+	@sudo chown -R $(shell id -u):$(shell id -g) src
 
 .PHONY: config-check
 config-check: build

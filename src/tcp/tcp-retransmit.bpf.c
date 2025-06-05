@@ -1,6 +1,7 @@
-#include "../common/maps.bpf.h"
-#include <bpf/bpf_tracing.h>
 #include <vmlinux.h>
+#include <bpf/bpf_tracing.h>
+
+#include "../common/maps.bpf.h"
 
 #define MAX_ENTRIES 8192
 

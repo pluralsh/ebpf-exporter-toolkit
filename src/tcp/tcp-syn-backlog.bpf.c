@@ -1,7 +1,8 @@
-#include "../common/maps.bpf.h"
+#include <vmlinux.h>
 #include <bpf/bpf_core_read.h>
 #include <bpf/bpf_tracing.h>
-#include <vmlinux.h>
+
+#include "../common/maps.bpf.h"
 
 #define BUCKET_MULTIPLIER 50
 #define BUCKET_COUNT 20
