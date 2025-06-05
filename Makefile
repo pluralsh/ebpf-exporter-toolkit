@@ -41,7 +41,7 @@ clean:
 .PHONY: build
 build: clean
 	@echo "Building eBPF programs in Docker..."
-	@docker build -t ebpf-builder .
+	@docker build -t ebpf-builder -f Dockerfile.builder .
 	@docker run --rm -v $(PWD)/dist:/output ebpf-builder sh -c "cp -r /build/ebpf_exporter/dist/* /output && chown -R $(shell id -u):$(shell id -g) /output"
 	@echo "Copied eBPF programs to dist directory"
 	@cp -r config/* dist/
