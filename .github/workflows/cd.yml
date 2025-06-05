@@ -6,6 +6,9 @@ on:
     tags:
       - 'v*'
 
+env:
+  REGISTRY_IMAGE: ${{ github.repository }}
+
 jobs:
   build-image:
     name: Build Image
@@ -39,7 +42,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ${{ env.REGISTRY_IMAGE }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -57,8 +60,9 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: ${{ matrix.platforms.platform }}
+          tags: ${{ env.REGISTRY_IMAGE }}
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: ${{ matrix.platforms.platform }}
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -106,7 +110,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ${{ env.REGISTRY_IMAGE }}
           tags: |
             type=raw,value=latest
             type=sha
@@ -116,4 +120,4 @@ jobs:
         working-directory: ${{ runner.temp }}/digests
         run: |
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf 'ghcr.io/${{ github.repository }}@sha256:%s ' *)
+            $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)
