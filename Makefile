@@ -23,6 +23,10 @@ jsonschema:
 clang-format-check:
 	@./scripts/clang-format-check.sh $(CLANG_FORMAT_FILES)
 
+.PHONY: clang-format
+clang-format:
+	docker run --rm -v $(PWD)/src:/src silkeh/clang clang-format --style=file -i $(CLANG_FORMAT_FILES)
+
 .PHONY: config-check
 config-check: build
 	@docker run --rm --privileged -v $(PWD)/dist:/dist ghcr.io/cloudflare/ebpf_exporter:latest --capabilities.keep=none --config.check --config.strict --config.dir=/dist --config.names=$(shell echo $(CONFIGS_TO_CHECK) | tr ' ' ',')
